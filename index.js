@@ -45,8 +45,10 @@ exports.handler = (event, context, callback) => {
         }
     }, function(err, data){
         if(err){
+            context.callbackWaitsForEmptyEventLoop = false;
             callback(err, "Save Failure");
         }else {
+            context.callbackWaitsForEmptyEventLoop = false;
             callback(null, 'SUCCESS');
         }
     });
