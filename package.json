@@ -1,0 +1,14 @@
+{
+  "name": "dog-diet-log",
+  "version": "0.0.1",
+  "description": "Lambda function for handling IoT button requests related to Neeko's meals",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.6.4"
+  }
+}
