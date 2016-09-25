@@ -3,7 +3,7 @@
  */
 'use strict';
 const AWS = require('aws-sdk');
-const dynamodb = AWS.DynamoDB({apiVersion: '2012-08-10'});
+const dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 const TABLE = "Meals";
 const SINGLE = "SINGLE";
 const DOUBLE = "DOUBLE";
@@ -40,12 +40,12 @@ exports.handler = (event, context, callback) => {
     dynamodb.putItem({
         "TableName": TABLE,
         "Item": {
-            "Timestamp": {"S", new Date().toISOString()},
-            "result": {"S", mealResult}
+            "Timestamp": {"S": new Date().toISOString()},
+            "result": {"S": mealResult}
         }
     }, function(err, data){
         if(err){
-            context.done('error', "save failure " + err);
+            context.done("save failure " + err);
         }else {
             context.done('success')
         }
