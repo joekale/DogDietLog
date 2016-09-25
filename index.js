@@ -45,10 +45,9 @@ exports.handler = (event, context, callback) => {
         }
     }, function(err, data){
         if(err){
-            context.done("save failure " + err);
+            callback(err, "Save Failure");
         }else {
-            console.log('Dynamo Success: ' + JSON.stringify(data, null, '  '));
-            context.succeed('SUCCESS');
+            callback(null, 'SUCCESS');
         }
     });
 };
