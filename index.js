@@ -44,11 +44,10 @@ exports.handler = (event, context, callback) => {
             "result": {"S": mealResult}
         }
     }, function(err, data){
+        context.callbackWaitsForEmptyEventLoop = false;
         if(err){
-            context.callbackWaitsForEmptyEventLoop = false;
             callback(err, "Save Failure");
         }else {
-            context.callbackWaitsForEmptyEventLoop = false;
             callback(null, 'SUCCESS');
         }
     });
