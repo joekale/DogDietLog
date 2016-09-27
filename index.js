@@ -35,7 +35,7 @@ exports.handler = (event, context, callback) => {
             mealResult = "SKIPPED";
             break;
         default:
-            console.error("clickType did not match expected values: ${event.clickType}");
+            callback(`Error. click type '${event.clickType}' not mapped`, null);
     }
     dynamodb.putItem({
         "TableName": TABLE,
@@ -46,9 +46,11 @@ exports.handler = (event, context, callback) => {
     }, function(err, data){
         context.callbackWaitsForEmptyEventLoop = false;
         if(err){
-            callback(err, "Save Failure");
+            //fail callback
+            callback(err, null);
         }else {
-            callback(null, 'SUCCESS');
+            //success callback
+            callback(null, data);
         }
     });
 };
