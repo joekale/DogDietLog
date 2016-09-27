@@ -41,7 +41,8 @@ exports.handler = (event, context, callback) => {
         "TableName": TABLE,
         "Item": {
             "Timestamp": {"S": new Date().toISOString()},
-            "result": {"S": mealResult}
+            "result": {"S": mealResult},
+            "batteryVoltage": {"S": event.batteryVoltage}
         }
     }, function(err, data){
         context.callbackWaitsForEmptyEventLoop = false;
