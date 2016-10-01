@@ -1,5 +1,5 @@
 ##Dog Diet Log
-An Amazon Web Services lambda function to log meal times and events received from the Amazon IoT Button clicks.
+A small project to test features of Amazon Web Services. Planning on logging meals using Amazon IoT Button and fetching and displaying results and allowing input using expressjs app within EC2 instance. 
 
 ###Lambda Functions
 
