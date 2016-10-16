@@ -1,6 +1,6 @@
 /**
-* Created by joekale on 9/24/16.
-*/
+ * Created by joekale on 9/24/16.
+ */
 'use strict';
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
@@ -8,19 +8,19 @@ const SINGLE = "SINGLE";
 const DOUBLE = "DOUBLE";
 const LONG = "LONG";
 /**
-* The following JSON template shows what is sent as the payload:
-{
-"serialNumber": "GXXXXXXXXXXXXXXXXX",
-"batteryVoltage": "xxmV",
-"clickType": "SINGLE" | "DOUBLE" | "LONG"
-}
-*
-* A "LONG" clickType is sent if the first press lasts longer than 1.5 seconds.
-* "SINGLE" and "DOUBLE" clickType payloads are sent for short clicks.
-*
-* For more documentation, follow the link below.
-* http://docs.aws.amazon.com/iot/latest/developerguide/iot-lambda-rule.html
-*/
+ * The following JSON template shows what is sent as the payload:
+ {
+ "serialNumber": "GXXXXXXXXXXXXXXXXX",
+ "batteryVoltage": "xxmV",
+ "clickType": "SINGLE" | "DOUBLE" | "LONG"
+ }
+ *
+ * A "LONG" clickType is sent if the first press lasts longer than 1.5 seconds.
+ * "SINGLE" and "DOUBLE" clickType payloads are sent for short clicks.
+ *
+ * For more documentation, follow the link below.
+ * http://docs.aws.amazon.com/iot/latest/developerguide/iot-lambda-rule.html
+ */
 exports.handler = (event, context, callback) => {
   var mealResult;
 
@@ -58,7 +58,7 @@ exports.handler = (event, context, callback) => {
     "IndexName": "iotbutton-index",
     "KeyConditionExpression": 'iotbutton = :serialNum',
     "ExpressionAttributeValues": {
-      ':serialNum': event.serialNumber
+      ":serialNum": {"S":event.serialNumber}
     }
   }, function(err, data){
     if(err){
@@ -66,21 +66,21 @@ exports.handler = (event, context, callback) => {
     }else if(data.Count > 1) {
       callback("IoT button is registered to multiple dogs", null);
     } else {
-      saveMeal(data.Items[0].uuid, mealResult);
+      saveMeal(context, data.Items[0].uuid.S, mealResult, callback);
     }
   });
 
 };
 
-var saveMeal = function(dogId, result){
+var saveMeal = function(context, dogId, result, callback){
   var date = Date.now();
   dynamodb.putItem({
     "TableName": "PupHealth_Meals",
     "Item": {
-      "id": `${date}:${dogId}`,
-      "time": {"S": date},
+      "id": {"S":`${date}:${dogId}`},
+      "time": {"S": `${date}`},
       "result": {"S": result},
-      "dogId": dogId
+      "dogId": {"S": dogId}
     }
   }, function(err, data){
     context.callbackWaitsForEmptyEventLoop = false;
